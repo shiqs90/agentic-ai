@@ -1,0 +1,83 @@
+{
+  "name": "Execution & Connection",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "health-check",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -112,
+        0
+      ],
+      "id": "8bf5336a-21fe-469f-8a1c-d5eed6fa3991",
+      "name": "Webhook",
+      "webhookId": "07287aa5-fb6e-4d91-bb4b-0f7c723846fa"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        96,
+        0
+      ],
+      "id": "b1edb1e1-6014-4587-b6c9-57e87f3ea449",
+      "name": "Wait",
+      "webhookId": "7d16a046-af4a-4c6e-b3db-fe3b8fd3f549"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=\"Health-check is fine\"",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        320,
+        0
+      ],
+      "id": "7801e14b-0d1a-4e8d-8a54-2c91997d8345",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "86dbecdb-fc93-4652-b71e-0a2a7b9c82d4",
+  "meta": {
+    "instanceId": "f8d1adab0f0b187463975e22550f4270e01999980d8602745b4b4750b4b5fdfb"
+  },
+  "id": "62uEZV66EUfiXD4A",
+  "tags": []
+}

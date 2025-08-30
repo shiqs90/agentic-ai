@@ -1,0 +1,655 @@
+{
+  "name": "Controller Architecture",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -432,
+        0
+      ],
+      "id": "9b99e26e-acc2-4065-a74a-08c5904e3031",
+      "name": "Gmail Trigger"
+    },
+    {
+      "parameters": {
+        "inputText": "From the Body and the subject of the mail, please classify the same onto below categories",
+        "categories": {
+          "categories": [
+            {
+              "category": "Doubt",
+              "description": "doubt related email"
+            },
+            {
+              "category": "Promotion",
+              "description": "A product or email of different"
+            },
+            {
+              "category": "Technical Assistance"
+            },
+            {
+              "category": "Updates/OTP"
+            },
+            {
+              "category": "Critical"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        -224,
+        0
+      ],
+      "id": "0ac64802-7cb7-4ba3-af87-7f833778b135",
+      "name": "Email Classifier"
+    },
+    {
+      "parameters": {
+        "operation": "addLabels"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        352,
+        -208
+      ],
+      "id": "59be146d-1d46-4412-8e11-8445d6fbc03b",
+      "name": "Doubt",
+      "webhookId": "2319c9b7-9736-4291-a26c-17281702c16f"
+    },
+    {
+      "parameters": {
+        "operation": "addLabels"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        336,
+        16
+      ],
+      "id": "bddde32b-37e3-46f8-bb8a-38b6cb02ddad",
+      "name": "Promotion",
+      "webhookId": "2319c9b7-9736-4291-a26c-17281702c16f"
+    },
+    {
+      "parameters": {
+        "operation": "addLabels"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        336,
+        208
+      ],
+      "id": "64f8ad1a-9fd8-4004-bad7-fce076566640",
+      "name": "Technical Assistance",
+      "webhookId": "2319c9b7-9736-4291-a26c-17281702c16f"
+    },
+    {
+      "parameters": {
+        "operation": "addLabels"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        336,
+        432
+      ],
+      "id": "0c224e81-61c2-42d5-bc68-e5403b6dc1da",
+      "name": "Update or OTP",
+      "webhookId": "2319c9b7-9736-4291-a26c-17281702c16f"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        256
+      ],
+      "id": "976b35d9-c901-4d28-a8ed-283b89086813",
+      "name": "OpenRouter Chat Model"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        -208
+      ],
+      "id": "d4b05bf6-de49-4a85-9b8e-22f0fe6a888e",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        592,
+        32
+      ],
+      "id": "177fc973-3543-485b-adf6-259b1aa77823",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        592,
+        224
+      ],
+      "id": "e4cff520-eb1e-46c5-b570-fd800639b5f7",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        592,
+        448
+      ],
+      "id": "c80ae779-e1c0-4694-a4f5-11ef97a7e49f",
+      "name": "AI Agent3"
+    },
+    {
+      "parameters": {
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        944,
+        448
+      ],
+      "id": "5ae7ecae-739d-44e0-936c-99e5d3e586e9",
+      "name": "Send a text message",
+      "webhookId": "9915ee94-7857-43e5-b7b2-da4d9e501c07",
+      "credentials": {
+        "telegramApi": {
+          "id": "Xi1IHA7SxloVwof7",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1280,
+        64
+      ],
+      "id": "f86d7d70-809e-4da8-89a7-de14e07bb016",
+      "name": "Create a draft",
+      "webhookId": "dd47f528-b787-41a2-828c-9329d135738a"
+    },
+    {
+      "parameters": {
+        "content": "## 🧠 Controller Agent – Multi-Agent Workflow Pattern\n\nThe **Controller Agent** is like the “manager” in a multi-agent system. Instead of doing the task itself, the controller inspects the user’s input or problem and decides **which specialized agent** should handle it.\n\nThink of it like a smart traffic director:  \nIt doesn’t write content or answer questions directly — it just **routes the task** to the best agent for the job.\n\n---\n\n### 🧠 The Intuition Behind Controller Agents\n\nImagine calling a customer service line:\n- You press 1 for sales  \n- Press 2 for support  \n- Press 3 for billing\n\nThe system doesn’t solve your problem — it **routes you to the right expert**.\n\nThat’s exactly what a Controller Agent does in an n8n AI workflow.\n\n---\n\n### 🛠️ How It Works in n8n\n\n1. A user question or task is received.\n2. A **Switch node** or **OpenAI-based router agent** checks the intent.\n3. Based on conditions (like keywords or classification), it routes the input to:\n   - A writing agent\n   - A math solver\n   - A product recommender\n   - A code generator\n   - ...or any other specialized agent.\n\nYou’re essentially building a **logic-based decision tree** with intelligent routing.\n\n---\n\n### ✅ Real-Life Example\n\nSuppose the input is:\n> “What is the capital of France?”\n\nThe controller sees the word **“capital”** and routes the task to a **Geography Agent**.\n\nAnother input:\n> “What’s 12% of 240?”\n\nIt matches **math keywords**, so the controller sends it to the **Math Solver Agent**.\n\n---\n\n### 🔄 Dynamic Controller with LLM\n\nYou can even make your controller an **AI-powered router** by asking OpenAI to:\n> “Classify this task into categories: Writing, Math, Code, or Other”\n\nThen use the output to control the flow dynamically.\n\n---\n\n### 💡 When to Use Controller Agents\n\n- When your users may send **different types of questions**\n- When you want **multiple tools or agents to coexist**\n- When you want to keep your workflow **organized and expandable**\n\nIt’s especially useful in chatbots, form handlers, or knowledge assistants.\n\n---\n\n### 🔗 Connect with Me\n\nWant to learn how to build controller-agent logic in n8n using LLMs and conditions?\n\n📺 **YouTube** → [@tech.mayankagg](https://www.youtube.com/@tech.mayankagg)  \n💼 **LinkedIn** → [Mayank Agarwal](https://www.linkedin.com/in/mayank953/)  \n📸 **Instagram** → [@tech.mayankagg](https://www.instagram.com/tech.mayankagg/)\n\n---\n\n*Shared by Mayank Agarwal – Teaching AI workflows that actually scale.*\n",
+        "height": 1920,
+        "width": 1840
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -432,
+        -2384
+      ],
+      "typeVersion": 1,
+      "id": "48308ed0-fce7-42d9-be03-f4eee01bd525",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.chatInput }}",
+                    "rightValue": "credit card",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "b558e2f5-078b-493b-8e75-310388bfe418"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Credit card"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b412e3e6-cce2-42b7-8978-fbde2424aace",
+                    "leftValue": "={{ $json.chatInput }}",
+                    "rightValue": "2",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        64,
+        1072
+      ],
+      "id": "5725b457-9b74-43de-9140-b712ca2e6880",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -336,
+        1168
+      ],
+      "id": "65cdacbd-d5f8-448c-bdff-76f4ae634f8b",
+      "name": "When chat message received",
+      "webhookId": "391a49b9-119a-49ff-9342-c8acafa922e9"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        1536
+      ],
+      "id": "12b83a58-73d2-49b9-855c-3cf5b896ac45",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ILmRIvQaThEklsaD",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.chatInput }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Credit Card",
+              "description": "Issues related to credit card"
+            },
+            {
+              "category": "Debit Card"
+            },
+            {
+              "category": "General"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        16,
+        1328
+      ],
+      "id": "2489ddfb-3f7f-47a9-88e5-bdf63aeb6c49",
+      "name": "Query Classifier"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-20250514",
+          "cachedResultName": "Claude 4 Sonnet"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        544,
+        320
+      ],
+      "id": "61a27eaa-41dc-42b9-8434-ff9daa2d9e9d",
+      "name": "Anthropic Chat Model"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1168,
+        880
+      ],
+      "id": "aa0abb1c-eccc-443a-a572-0ba080aba7f7",
+      "name": "AI Agent4"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        992,
+        1184
+      ],
+      "id": "dab1c59f-e5b4-4896-9689-ed5d60dba316",
+      "name": "AI Agent Tool"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        1344,
+        1184
+      ],
+      "id": "7e9b43ce-193f-42a5-a5be-1e60cba5a170",
+      "name": "AI Agent Tool1"
+    },
+    {
+      "parameters": {
+        "content": "## 🧠 Why Use a Controller Agent?\n\nA **Controller Agent** isn’t just about routing — it’s about making smart decisions in real-time to get things done **faster, better, and more reliably**. Instead of sending everything to one generic AI, the controller directs tasks to the right expert agent — just like a smart assistant would.\n\nHere’s why that’s a game changer 👇\n\n---\n\n### ✅ Keeps Things Fast and Efficient\n\nIf a user just needs a quick math answer, there’s no need to involve a big language model trained to write essays.  \nThe controller sends it straight to the **Math Agent**, saving time and processing power.\n\n**Example:**  \n> Input: “What’s 45% of 720?”  \n→ Controller detects it's a math task  \n→ Sends it to the **Math Agent**  \n→ Gets a fast and accurate result.\n\n---\n\n### ✅ Modular & Easy to Expand\n\nAs your system grows, you don’t need to redesign it. Just plug in new agents, and the controller will handle the rest.\n\n**Example:**  \nWant to add a **Travel Info Agent**?  \nYou simply update the controller’s logic — no need to change the entire workflow.\n\n---\n\n### ✅ Smarter Query Handling = Happier Users\n\nUsers get more **precise, useful responses** because their query goes to an agent trained for that type of task — not a jack-of-all-trades.\n\n**Example:**  \n> “Give me a summary of the latest product update.”  \n→ Routed to **Content Summarizer Agent**  \nInstead of getting generic fluff, the user gets exactly what they asked for.\n\n---\n\n### ✅ Human Escalation When It Matters\n\nSometimes, automation isn’t enough. A good controller knows when to **escalate to a human** — especially for things like billing issues, complaints, or sensitive requests.\n\n**Example:**  \n> “I’m getting charged wrongly every month.”  \n→ Controller flags it as urgent  \n→ Hands off to human support instead of an AI agent\n\n---\n\n### ✅ Cleaner Workflow, Better Maintenance\n\nThe controller keeps your entire system **organized**. Each agent does its job. No bloated prompts. No confusion.\n\nAnd when something breaks?  \nYou fix just the part that needs attention — not the whole system.\n\n---\n\n### 🔗 Connect with Me\n\nWant to build your own Controller Agent workflow in n8n?\n\n📺 **YouTube** → [@tech.mayankagg](https://www.youtube.com/@tech.mayankagg)  \n💼 **LinkedIn** → [Mayank Agarwal](https://www.linkedin.com/in/mayank953/)  \n📸 **Instagram** → [@tech.mayankagg](https://www.instagram.com/tech.mayankagg/)\n\n---\n\n*Shared by Mayank Agarwal – Helping you automate smart, modular, and scalable AI systems using n8n.*\n",
+        "height": 1864,
+        "width": 1616,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -256,
+        1984
+      ],
+      "typeVersion": 1,
+      "id": "a81603f2-ab1d-4fcc-8127-eb89dcd69dda",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        352,
+        704
+      ],
+      "id": "8457269d-3af9-4208-8d72-f03809d38d5d",
+      "name": "Send template",
+      "webhookId": "aefffe62-ab46-4c67-a30d-c1e094ec817d"
+    },
+    {
+      "parameters": {
+        "content": "##  Avoid this for a Controller/Router Workflow\n",
+        "height": 576,
+        "width": 880,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        832,
+        800
+      ],
+      "typeVersion": 1,
+      "id": "3923d6d5-bbe1-45de-b845-adfc8863a5b0",
+      "name": "Sticky Note2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Email Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Classifier": {
+      "main": [
+        [
+          {
+            "node": "Doubt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Promotion",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Technical Assistance",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update or OTP",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send template",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Email Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Doubt": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent3": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        []
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Create a draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Create a draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        []
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Query Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Query Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Promotion": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent4",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent Tool1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent4",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "676423e6-0484-4490-bcd5-de3a93d64369",
+  "meta": {
+    "instanceId": "9ff4b997319de8b36f3ec9da7971f29ebdff0b93b4afaf4fcaed05164719d3b2"
+  },
+  "id": "0OpwAMhGD2m7PZFG",
+  "tags": []
+}

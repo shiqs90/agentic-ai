@@ -1,0 +1,24 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the data from CSV file
+data = pd.read_csv('data.csv')
+
+# Check the first few rows to understand the structure of the data
+print(data.head())
+
+# Check if a column named 'Survived' exists - typically in Titanic datasets
+if 'Survived' in data.columns:
+    # Count the number of survivors and non-survivors
+    survival_counts = data['Survived'].value_counts()
+
+    # Create a bar plot using seaborn
+    sns.countplot(x='Survived', data=data)
+    plt.title('Number of People Who Survived and Died')
+    plt.xlabel('Survival Status (0 = Died, 1 = Survived)')
+    plt.ylabel('Number of People')
+    plt.show()
+    print("Graph has been created successfully.")
+else:
+    print("The column 'Survived' is not present in the data.")

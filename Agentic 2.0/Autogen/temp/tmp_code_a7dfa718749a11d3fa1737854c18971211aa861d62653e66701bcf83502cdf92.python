@@ -1,0 +1,10 @@
+import pandas as pd
+
+# Load the CSV data into a DataFrame
+data = pd.read_csv('data.csv')
+
+# Get the column names
+column_names = data.columns
+
+print("Column names in the data.csv file:")
+print(column_names)

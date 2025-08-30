@@ -1,0 +1,158 @@
+{
+  "name": "first Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Hi, let us learn n8n\n",
+        "height": 80
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -240,
+        -192
+      ],
+      "typeVersion": 1,
+      "id": "ee7dc28e-adb7-4a13-85ee-8ef6b8188566",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "formTitle": "Test Workflow",
+        "formDescription": "A form to test the workflow",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "First Name",
+              "placeholder": "Enter your full Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "placeholder": "abc@example",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Mobile",
+              "fieldType": "number",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -304,
+        64
+      ],
+      "id": "1c045448-2fdd-4491-89b2-72047e83233a",
+      "name": "form",
+      "webhookId": "38eab494-6ddc-4200-9f09-edbaf86ef32f"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=I want you to draft a good email to be sent to the below details and make sure that it is professional. \n\n\nName - {{ $json['First Name'] }}\nEmail - {{ $json.Email }}\nmobile {{ $json.Mobile }}\n\nSubmitted at - {{ $json.submittedAt }}\n\n\nUsing above send a very good greeting email to the user.\n\n\nSign it as below\n\n- Mayank Aggarwal\nDirector\nconsulting pvt. limited\n\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -96,
+        64
+      ],
+      "id": "78879e47-d663-497e-ab6e-162c1701b8e6",
+      "name": "openai node",
+      "credentials": {
+        "openAiApi": {
+          "id": "PHyr1OT5ZNhEa8f8",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('form').item.json.Email }}",
+        "subject": "Hello There",
+        "message": "={{ $json.message.content }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        256,
+        64
+      ],
+      "id": "f52d7c1c-539d-4e6b-9995-925ad4d368be",
+      "name": "send msg via gmail",
+      "webhookId": "0022266c-b0af-4f37-9c20-4ef95debe1e9",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Wi5xCBzGf3knyShU",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "form": {
+      "main": [
+        [
+          {
+            "node": "openai node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "openai node": {
+      "main": [
+        [
+          {
+            "node": "send msg via gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "send msg via gmail": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "877cb3d9-0161-494f-b090-f59b4a019b6e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f8d1adab0f0b187463975e22550f4270e01999980d8602745b4b4750b4b5fdfb"
+  },
+  "id": "owVH0kQJpRP8Cc7K",
+  "tags": [
+    {
+      "createdAt": "2025-08-09T03:50:17.949Z",
+      "updatedAt": "2025-08-09T03:50:17.949Z",
+      "id": "ebAPswSSLuOgxRgt",
+      "name": "learnn8n"
+    }
+  ]
+}

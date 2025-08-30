@@ -1,0 +1,264 @@
+{
+  "name": "1. Chain of Thought",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## 🔗 Chain of Agents – Multi-Agent Workflow Pattern\n\nThe **Chain of Agents** is a foundational pattern in multi-agent systems, especially useful in AI-driven automation workflows.\n\nThis architecture mimics a **refinement pipeline**, where each agent contributes a specific layer of intelligence or processing logic, transforming data step-by-step.\n\n---\n\n### 🧠 How It Works\n\n1. **Agent A – Creator / Generator**  \n   This agent generates the initial raw content or output. It’s responsible for producing the first draft, idea, or response based on user input or a given prompt.  \n   *Example*: Generate a rough blog post on “Why Clean Code Matters.”\n\n2. **Agent B – Improver / Refiner**  \n   The second agent receives Agent A’s output and improves it. This includes enhancing grammar, structure, coherence, or enriching content with additional depth.  \n   *Example*: Rewrite the draft to be more readable, persuasive, and technically accurate.\n\n3. **Agent C – Summarizer / Polisher**  \n   The final agent distills the refined content into a short summary, extract, or bullet list. This is useful for previews, TL;DRs, or condensed formats.  \n   *Example*: Summarize the improved article into 3 key takeaways.\n\n---\n\n### 💡 Use Cases\n\n- Blog pipeline: Idea → Draft → Refine → Summary\n- Proposal writing: Raw pitch → Polish → Executive summary\n- Report generation: Raw data → Interpret → Summary points\n\n---\n\n### ✅ Benefits\n\n- Separation of concerns: Each agent focuses on a single responsibility.\n- Modular: You can replace or enhance one agent without rewriting the whole chain.\n- Human-like collaboration: Mimics the way content is reviewed in editorial or research teams.\n\n---\n\n### 🔗 Connect with Me\n\nWant to learn more about building such workflows in n8n and AI?\n\n📺 **YouTube** → [@tech.mayankagg](https://www.youtube.com/@tech.mayankagg)  \n💼 **LinkedIn** → [Mayank Agarwal](https://www.linkedin.com/in/mayank953/)  \n📸 **Instagram** → [@tech.mayankagg](https://www.instagram.com/tech.mayankagg/)\n\n---\n\n*Created by Mayank Agarwal – Empowering AI Automation for Everyone.*\n",
+        "height": 1220,
+        "width": 2364,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        400,
+        256
+      ],
+      "typeVersion": 1,
+      "id": "542c1575-8019-4afc-9196-ded8a279112a",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        1776
+      ],
+      "id": "cde8c7ed-1cf9-4d7c-b5ca-01f10e962a14",
+      "name": "When chat message received",
+      "webhookId": "8b5d17e6-9356-437e-a97a-4f4027e6451d"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Here is the topic to write a blog about: {{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "# Overview\nYou are an expert outline writer. Your job is to generate a structured outline for a blog post with section titles and key points."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        896,
+        1776
+      ],
+      "id": "3c287909-71e1-4e77-9efd-14903d9fb507",
+      "name": "Researcher"
+    },
+    {
+      "parameters": {
+        "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Query', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavilyTool",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        1968
+      ],
+      "id": "57e1d856-14a6-4b11-89a5-7b331caf1a3e",
+      "name": "Search in Tavily",
+      "credentials": {
+        "tavilyApi": {
+          "id": "GEXfLIYhPvoeKENJ",
+          "name": "Tavily account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Here is the outline: \n\n{{ $json.output }}",
+        "options": {
+          "systemMessage": "=# Overview\nYou are an expert blog evaluator. Revise this outline and ensure it covers the following key criteria: \n(1) Engaging Introduction \n(2) Clear Section Breakdown\n(3) Logical Flow\n(4) Conclusion with Key Takeaways\n\n## Output\nOnly output the revised outline."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1280,
+        1776
+      ],
+      "id": "8557a44f-7c9c-4e33-9517-5b489a079812",
+      "name": "Writer"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Here if the revised outline: {{ $json.output }}",
+        "options": {
+          "systemMessage": "=# Overview\nYou are an expert blog writer. Generate a detailed blog post using the outline with well-structured paragraphs and engaging content."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1712,
+        1776
+      ],
+      "id": "494768cc-10c1-4cb9-a636-1ef32b5721b4",
+      "name": "Reviewer & Editor"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2384,
+        1616
+      ],
+      "id": "1cd89e39-7f7d-4e2e-bc48-a2dc03136cf0",
+      "name": "Send a message",
+      "webhookId": "fe09ba8d-a168-46cb-a2bb-846fa895971a"
+    },
+    {
+      "parameters": {
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        2384,
+        2000
+      ],
+      "id": "bfa522db-5451-406e-90c4-81ebd7cefe7c",
+      "name": "Send a message1",
+      "webhookId": "4bf2f7f5-bb1a-437e-8c63-699a45dc8aa2"
+    },
+    {
+      "parameters": {
+        "content": "## 🔁 Chain of Agent – Why Use It?\n\n**Chain of Agent** means breaking a big task into smaller, focused steps and assigning each one to a different AI agent. Instead of asking one agent to do everything at once, you build a smart pipeline where each step does one thing well.\n\nThis makes your automation smarter, more accurate, and easier to manage.\n\n---\n\n### ✅ 1. Better Results, Fewer Mistakes\n\nEach agent has a clear task, so it’s less likely to make a mistake or generate confusing output.\n\n**Example:**  \n- Agent A → Write a draft  \n- Agent B → Fix the grammar and structure  \n- Agent C → Summarize in 3 lines\n\nSince no single agent has to do everything, the final result comes out cleaner and more useful.\n\n---\n\n### ✅ 2. More Control Over Each Step\n\nIf something doesn’t look right, you can improve just one step without changing the whole workflow.\n\n**Example:**  \nIf the summary isn’t clear enough, just adjust the prompt for Agent C.  \nEverything else stays untouched.\n\n---\n\n### ✅ 3. Agents Become Specialists\n\nInstead of one general-purpose AI, you build a team of “specialist” agents — each focused on doing one task very well.\n\n**Example:**  \n- Content Creator  \n- Editor  \n- Summarizer\n\nEach step becomes more reliable and easier to improve.\n\n---\n\n### ✅ 4. Easier to Fix and Improve\n\nWhen something breaks or gives poor output, it’s easy to debug — just fix the agent that caused it.\n\n**Example:**  \nIf the tone of the writing is off, it's likely an issue with Agent A’s prompt.\n\n---\n\n### ✅ 5. Reusable and Flexible\n\nOnce built, a prompt-chained workflow can be reused for different topics and industries — just change the input.\n\n**Example:**  \nYou can reuse the same chain to generate:\n- Blog posts\n- Video descriptions\n- Email campaigns\n- Marketing copy\n\nJust plug in new ideas and run it!\n\n---\n\n🔁  **In short**: Chain of Agent turns a single big task into a smart series of focused steps — like assembling your own AI-powered team where each agent knows its job.\n\n---\n\n### 🔗 Connect with Me\n\nWant to learn more about building AI workflows using n8n and prompt chaining?\n\n📺 **YouTube** → [@tech.mayankagg](https://www.youtube.com/@tech.mayankagg)  \n💼 **LinkedIn** → [Mayank Agarwal](https://www.linkedin.com/in/mayank953/)  \n📸 **Instagram** → [@tech.mayankagg](https://www.instagram.com/tech.mayankagg/)\n\n---\n\n*Shared by Mayank Agarwal – Helping you automate smarter with AI + n8n.*\n",
+        "height": 2128,
+        "width": 2416
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        416,
+        2368
+      ],
+      "typeVersion": 1,
+      "id": "f4377c28-855a-4981-b953-1a9334f1e246",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1328,
+        2160
+      ],
+      "id": "f8454994-6651-484c-9d2b-67e5ebf71d2b",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ILmRIvQaThEklsaD",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1,
+      "position": [
+        2192,
+        2080
+      ],
+      "id": "9a464b32-36da-47e3-8c55-0c48bc52f98f",
+      "name": "Respond to Chat"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Researcher",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Researcher": {
+      "main": [
+        [
+          {
+            "node": "Writer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search in Tavily": {
+      "ai_tool": [
+        [
+          {
+            "node": "Researcher",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Writer": {
+      "main": [
+        [
+          {
+            "node": "Reviewer & Editor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reviewer & Editor": {
+      "main": [
+        []
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Researcher",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Writer",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Reviewer & Editor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e0435827-fe9a-47e9-a840-14e61afdc54e",
+  "meta": {
+    "instanceId": "9ff4b997319de8b36f3ec9da7971f29ebdff0b93b4afaf4fcaed05164719d3b2"
+  },
+  "id": "S4r1FS0QzyNk95Nt",
+  "tags": []
+}

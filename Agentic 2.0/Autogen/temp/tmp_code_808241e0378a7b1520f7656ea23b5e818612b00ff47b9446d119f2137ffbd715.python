@@ -1,0 +1,26 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the data
+data = pd.read_csv('data.csv')
+
+# Inspect the data to find the column related to survival
+# For this example, assume a column named 'Survived' with 1 indicating survived and 0 indicating died
+if 'Survived' in data.columns:
+    # Count the number of people who survived and died
+    survival_counts = data['Survived'].value_counts()
+
+    # Create a bar plot
+    survival_counts.plot(kind='bar', color=['red', 'green'], alpha=0.7)
+    plt.title('Number of People Who Died and Survived')
+    plt.xlabel('Survival Status (0 = Died, 1 = Survived)')
+    plt.ylabel('Number of People')
+    plt.xticks([0, 1], ['Died', 'Survived'])  # Custom labels for the x-axis
+    plt.tight_layout()
+
+    # Save the plot
+    plt.savefig('output.png')
+    plt.close()
+    print("Plot created and saved as 'output.png'.")
+else:
+    print("Could not find a 'Survived' column in the dataset.")

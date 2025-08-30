@@ -1,0 +1,464 @@
+{
+  "name": "React Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## 🔁 Feedback Loop Agent – Multi-Agent Workflow Pattern\n\nThe **Feedback Loop Agent** (also called a Reactive Agent) is designed to create **self-improving AI workflows**. It doesn’t just generate a single output and stop — it builds in a loop where the AI can be **evaluated**, **critiqued**, and **improved**.\n\nThis is similar to how a human writes a rough draft, reviews it, and rewrites it based on feedback.\n\n---\n\n### 🧠 The Intuition Behind Feedback Loops\n\nLet’s say you’re writing an important email:\n1. You write a rough draft (1st attempt).\n2. You read it and spot some issues.\n3. You make edits and refine it.\n4. You send the final version.\n\nThis *review–revise–repeat* loop is exactly what this pattern enables for AI — except it’s done with **multiple AI agents** or logic-based evaluation.\n\n---\n\n### 🔄 How It Works in n8n\n\n1. **Agent A** produces an initial output — like a blog, response, or code.\n2. **Agent B** (the evaluator or critic) reviews that output.\n3. If Agent B finds flaws or gives a low score:\n   - The output is **sent back to Agent A** to regenerate or improve.\n   - Or it’s revised using a separate **Editor Agent**.\n4. This loop continues until a set quality is reached or a retry limit is hit.\n\nYou can use nodes like:\n- `If` or `Switch` to evaluate score thresholds\n- `Merge` to track attempts\n- `Loop` using `Execute Workflow` or recursive logic\n\n---\n\n### ✅ Real-Life Example\n\nImagine you're using AI to write product descriptions for your store:\n\n- 🤖 **Agent Writer**: Creates the first version.\n- 🧠 **Agent Reviewer**: Checks for clarity, tone, and call-to-action quality.\n- If the result gets a **score < 7/10**, it’s re-sent to the writer with suggestions to improve.\n\nThis continues until the output passes the bar — giving you **high-quality AI results without manual review**.\n\n---\n\n### 💡 When to Use Feedback Loop Agents\n\n- You need **high-quality or error-free** AI output (e.g., client-facing emails, published blogs).\n- You want **multiple attempts** to get better results from LLMs.\n- You’re building an **AI system that simulates human judgment and revision**.\n- You want to create **auto-correction loops** for content, answers, or even code.\n\n---\n\n### 🔗 Connect with Me\n\nCurious how to build AI systems that can improve themselves?\n\n📺 **YouTube** → [@tech.mayankagg](https://www.youtube.com/@tech.mayankagg)  \n💼 **LinkedIn** → [Mayank Agarwal](https://www.linkedin.com/in/mayank953/)  \n📸 **Instagram** → [@tech.mayankagg](https://www.instagram.com/tech.mayankagg/)\n\n---\n\n*Shared by Mayank Agarwal – Building self-aware automation with n8n + AI.*\n",
+        "height": 1744,
+        "width": 1728
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -144,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "18968c25-d444-46a2-b9f9-c7ff4853036d",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -48,
+        2144
+      ],
+      "id": "e93ee18e-6562-40bd-8c5b-ce5eb039342b",
+      "name": "When chat message received",
+      "webhookId": "fcb9fa71-0804-4bf2-891e-7d770e3e76ec"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful assistant. Write a quick summary on this but always mess up the real world details. \n\nFor example. say eifel tower is in antartica"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        320,
+        2144
+      ],
+      "id": "8649d9df-33a9-492a-a7c8-4484f342105a",
+      "name": "First Draft Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        752,
+        2672
+      ],
+      "id": "7277a1ad-1b6f-4d75-98fd-22c3610e3232",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ILmRIvQaThEklsaD",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Based on the input, please check the same with web search tool of tavily for accuracy provided to you.\n\n\nJust output \"Done\" or \"Rework\" and nothing else in your output.\n\n\nIf the information is correct, say 'Done'.\n\n{{ $json.output }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1136,
+        2144
+      ],
+      "id": "675a783c-73b4-491c-aea1-af6eda95ff02",
+      "name": "Evaluater Agent",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Query', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavilyTool",
+      "typeVersion": 1,
+      "position": [
+        1232,
+        2304
+      ],
+      "id": "5890dc37-6103-4e16-b96d-793e660ff417",
+      "name": "Search in Tavily",
+      "credentials": {
+        "tavilyApi": {
+          "id": "GEXfLIYhPvoeKENJ",
+          "name": "Tavily account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2336,
+        2048
+      ],
+      "id": "6eec7a4d-7e77-49a0-b019-76ba6c39d57f",
+      "name": "Send a text message",
+      "webhookId": "2259bceb-2343-4bba-8774-b5d295a8cceb",
+      "credentials": {
+        "telegramApi": {
+          "id": "Xi1IHA7SxloVwof7",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "032e1c35-c883-4e0e-8d10-62fc6565161a",
+              "name": "loop_number",
+              "value": "={{ $('Edit Fields1').item.json.loop_number +1}} ",
+              "type": "number"
+            },
+            {
+              "id": "4a6e6172-aca5-4353-a827-a145674327a3",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2384,
+        2400
+      ],
+      "id": "747e572f-baaa-4275-bf01-0f4c81291da5",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "67f8480e-17fd-4948-93c2-5b59e127262c",
+              "name": "loop_number",
+              "value": 0,
+              "type": "number"
+            },
+            {
+              "id": "64b55f45-0b47-4466-9907-ce1985957910",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        896,
+        2144
+      ],
+      "id": "d2fa2273-82a4-4fd5-a107-8c6275c9bce2",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.output }}",
+                    "rightValue": "Rework",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "d9b1463c-d497-4174-9e1f-dc3f04245da3"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "rework"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "51e0893f-62f5-4280-82b1-341e96f51433",
+                    "leftValue": "={{ $json.output }}",
+                    "rightValue": "Done",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Done"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "04f183af-bce9-40f9-8749-cd639c876be5",
+                    "leftValue": "={{ $('Edit Fields1').item.json.loop_number }}",
+                    "rightValue": "3",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Done"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1728,
+        2144
+      ],
+      "id": "1d32568e-cb7f-46de-93c4-2b3d31210a8e",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1,
+      "position": [
+        2112,
+        2064
+      ],
+      "id": "68cfb08a-2179-4555-b7f9-63e84640c325",
+      "name": "Respond to Chat"
+    },
+    {
+      "parameters": {
+        "content": "## 🔁 Why Feedback Loop Agents Are a Game Changer\n\nThe **Feedback Loop Agent** setup doesn’t just stop at “good enough.” It keeps refining, rechecking, and retrying until the output actually meets the mark. That’s what makes it ideal for use cases where **quality matters more than speed**.\n\nHere’s why it’s so powerful:\n\n---\n\n### ✅ Fewer Mistakes, Less Manual Work\n\nWith a built-in reviewer agent checking every result, you can catch mistakes early — before they reach the user. This reduces your need to manually read through AI output or test code line-by-line.\n\n**Example:**  \nAn AI writes code → Another AI checks it for bugs or logic flaws  \nIf something’s off, it sends it back for improvement — just like peer review.\n\n---\n\n### ✅ High-Quality Results, Every Time\n\nThis setup forces your AI to hit quality standards before “finalizing” the output. You can build in scoring, checklists, or constraints.\n\n**Example:**  \n> “Only approve the answer if it’s under 150 words, uses plain English, and includes a call-to-action.”\n\nIf the output fails? The AI tries again — with feedback.\n\n---\n\n### ✅ Super Flexible for All Kinds of Use Cases\n\nDon’t limit it to just writing or coding. You can use Feedback Loop Agents to:\n- Improve product descriptions\n- Validate data formatting\n- Fix broken Markdown\n- Refine UI copy or button labels\n\nIf it can be checked, it can be looped!\n\n---\n\n### ✅ Gets Smarter with Every Pass\n\nEach iteration isn’t random — it learns from the feedback. This makes your AI more precise with every retry, and your workflow evolves to deliver **consistently sharp** results.\n\n**Example:**  \nFirst version: Too long  \nSecond version: Fixed length, but too formal  \nThird version: ✅ Just right — short, friendly, on-brand\n\n---\n\n### 🔗 Connect with Me\n\nWant to build AI workflows that actually improve themselves as they run?\n\n📺 **YouTube** → [@tech.mayankagg](https://www.youtube.com/@tech.mayankagg)  \n💼 **LinkedIn** → [Mayank Agarwal](https://www.linkedin.com/in/mayank953/)  \n📸 **Instagram** → [@tech.mayankagg](https://www.instagram.com/tech.mayankagg/)\n\n---\n\n*Shared by Mayank Agarwal – Helping you build smarter, self-refining AI flows using n8n.*\n",
+        "height": 1868,
+        "width": 2388,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        160,
+        2880
+      ],
+      "typeVersion": 1,
+      "id": "ff42294d-4d22-4fab-b5aa-65a294e81533",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('First Draft Agent').item.json.output }}",
+        "options": {
+          "systemMessage": "=You are a helpful assistant. Correct anything wrong in the output.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2032,
+        2400
+      ],
+      "id": "834b40b7-d5ad-41f5-87ad-bba37b3ba44d",
+      "name": "Subsequent Draft Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        1904,
+        2608
+      ],
+      "id": "832f5533-3319-4fc5-9b30-94c092582324",
+      "name": "Ollama Chat Model"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "First Draft Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "First Draft Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Evaluater Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "First Draft Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search in Tavily": {
+      "ai_tool": [
+        [
+          {
+            "node": "Evaluater Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evaluater Agent": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Evaluater Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Evaluater Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Subsequent Draft Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        []
+      ]
+    },
+    "Subsequent Draft Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Subsequent Draft Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b5e0296d-7f56-4f8a-83e3-a482cc51618a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9ff4b997319de8b36f3ec9da7971f29ebdff0b93b4afaf4fcaed05164719d3b2"
+  },
+  "id": "afWwGk2IFtIAH3cf",
+  "tags": []
+}

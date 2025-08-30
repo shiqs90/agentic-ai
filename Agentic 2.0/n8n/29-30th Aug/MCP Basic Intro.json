@@ -1,0 +1,161 @@
+{
+  "name": "MCP Basic Intro",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "29c64091-bcee-4b27-9214-d9004bf894d6"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c9ba9cbb-2445-48a2-8a3b-8a071a02e5fb",
+      "name": "MCP Server Trigger",
+      "webhookId": "29c64091-bcee-4b27-9214-d9004bf894d6"
+    },
+    {
+      "parameters": {
+        "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Query', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavilyTool",
+      "typeVersion": 1,
+      "position": [
+        96,
+        208
+      ],
+      "id": "584370d3-9b3a-46f7-86e8-92e131ea1813",
+      "name": "Search in Tavily",
+      "credentials": {
+        "tavilyApi": {
+          "id": "GEXfLIYhPvoeKENJ",
+          "name": "Tavily account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        688,
+        0
+      ],
+      "id": "c2503c21-55a3-4aff-bbc7-4003bc6f1f76",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        432,
+        16
+      ],
+      "id": "5363dc1d-9294-43c6-82d6-476f9b7861e7",
+      "name": "When chat message received",
+      "webhookId": "4ee75d7e-78c5-4e6f-a204-985951aec394"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        704,
+        176
+      ],
+      "id": "4f69d599-e5db-4448-a75c-1d9043ac9cc5",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "hcXkQxBP047vQ4Ma",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://n8n-nocode.app.n8n.cloud/mcp-test/29c64091-bcee-4b27-9214-d9004bf894d6"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.1,
+      "position": [
+        752,
+        304
+      ],
+      "id": "0fdb250c-2222-4e2e-a60b-64c0fa04a105",
+      "name": "MCP Client"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Search in Tavily": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "215657b1-18c0-4cd1-9076-3703154b385b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9ff4b997319de8b36f3ec9da7971f29ebdff0b93b4afaf4fcaed05164719d3b2"
+  },
+  "id": "oCT8JkkAozFTyuA1",
+  "tags": []
+}

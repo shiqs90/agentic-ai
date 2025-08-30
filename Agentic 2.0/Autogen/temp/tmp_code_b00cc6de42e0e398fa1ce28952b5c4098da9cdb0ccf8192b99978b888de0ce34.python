@@ -1,0 +1,36 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load the data from CSV file
+file_path = 'data.csv'
+data = pd.read_csv(file_path)
+
+# Visualize survival rate by gender
+plt.figure(figsize=(6,4))
+sns.countplot(x='Sex', hue='Survived', data=data)
+plt.title('Survival Rate by Gender')
+plt.xlabel('Gender')
+plt.ylabel('Count')
+plt.legend(title='Survived', loc='upper right', labels=['Died', 'Survived'])
+
+# Visualize survival rate by class
+plt.figure(figsize=(6,4))
+sns.countplot(x='Pclass', hue='Survived', data=data)
+plt.title('Survival Rate by Passenger Class')
+plt.xlabel('Passenger Class')
+plt.ylabel('Count')
+plt.legend(title='Survived', loc='upper left', labels=['Died', 'Survived'])
+
+# Visualize survival rate by age group
+plt.figure(figsize=(6,4))
+data['AgeGroup'] = pd.cut(data['Age'], bins=[0, 12, 18, 35, 60, 80], labels=['Child', 'Teen', 'Young Adult', 'Adult', 'Senior'])
+sns.countplot(x='AgeGroup', hue='Survived', data=data)
+plt.title('Survival Rate by Age Group')
+plt.xlabel('Age Group')
+plt.ylabel('Count')
+plt.legend(title='Survived', loc='upper right', labels=['Died', 'Survived'])
+
+plt.tight_layout()
+plt.savefig('survival_analysis.png')
+print("Survival analysis completed. Visualizations saved as 'survival_analysis.png'.")

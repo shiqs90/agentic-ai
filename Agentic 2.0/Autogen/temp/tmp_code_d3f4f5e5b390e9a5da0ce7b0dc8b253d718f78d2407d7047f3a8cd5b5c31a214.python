@@ -1,0 +1,26 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Read the CSV file
+data = pd.read_csv('data.csv')
+
+# Check if the dataset has a 'Survived' column
+if 'Survived' in data.columns:
+    # Count the number of people who survived and who didn't
+    survival_counts = data['Survived'].value_counts()
+
+    # Plot
+    plt.figure(figsize=(8, 6))
+    survival_counts.plot(kind='bar', color=['red', 'green'])
+    plt.title('Survival Counts')
+    plt.xlabel('Survived (0 = No, 1 = Yes)')
+    plt.ylabel('Count')
+    plt.xticks([0,1], ['Died', 'Survived'], rotation=0)
+    plt.grid(axis='y')
+    plt.tight_layout()
+
+    # Save the plot
+    plt.savefig('output.png')
+    print("Plot successfully created and saved as 'output.png'.")
+else:
+    print("The dataset does not contain a 'Survived' column.")

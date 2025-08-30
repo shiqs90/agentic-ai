@@ -1,0 +1,9 @@
+import pandas as pd
+
+# Load the CSV file into a DataFrame
+df = pd.read_csv('data.csv')
+
+# Retrieve the number of rows using the shape attribute
+num_rows = df.shape[0]
+
+print(f"The number of rows in the CSV file is: {num_rows}")

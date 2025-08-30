@@ -1,0 +1,301 @@
+{
+  "name": "2. Parallel Flow",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## ⚖️ Parallel Agents – Multi-Agent Workflow Pattern\n\nThe **Parallel Agents** architecture is all about **running multiple AI agents at the same time**, each working independently on the same input, but from **different perspectives** or with **different roles**.\n\nInstead of chaining one after the other (like in a relay), this pattern is more like a **team brainstorm** — where everyone works simultaneously, bringing their unique ideas to the table.\n\n---\n\n### 🧠 The Intuition Behind Parallel Agents\n\nImagine asking a question in a group:\n> \"What do you think about remote work?\"\n\n- One person might say it **boosts productivity**.\n- Another might say it **hurts team bonding**.\n- A third might give a **balanced view**.\n\nEach opinion is valid — and when combined, they give you a much **fuller picture**.\n\nThat’s exactly what Parallel Agents do in a workflow — they give you **diverse outputs** from the same input, using different prompts or roles.\n\n---\n\n### 🛠️ How It Works in n8n\n\n1. A `Set` or `Webhook` node gives a **common input** (e.g., a topic or question).\n2. Multiple **OpenAI Chat nodes** run in parallel:\n   - One is prompted to be *optimistic*\n   - One is prompted to be *critical*\n   - One is asked to give a *neutral summary*\n3. The results are collected (optionally merged) using a `Merge` node or processed further.\n\n---\n\n### ✅ Real-Life Example\n\nLet’s say the topic is:\n> “The impact of AI on jobs.”\n\nHere’s how three parallel agents might respond:\n\n- 🤖 **Agent A (Positive)**:  \n  “AI is creating new high-tech roles, increasing productivity, and enabling people to work smarter.”\n\n- 🧠 **Agent B (Cautious)**:  \n  “While AI has benefits, it may displace many workers and cause economic imbalance if not managed well.”\n\n- 📊 **Agent C (Balanced)**:  \n  “AI is both a risk and an opportunity. Success depends on how we adapt our workforce and policies.”\n\nEach agent shares a **different angle**, which is powerful when you need well-rounded insights.\n\n---\n\n### 💡 When to Use Parallel Agents\n\n- To explore multiple viewpoints or writing tones\n- For A/B testing marketing content\n- To generate multiple content versions (e.g., blog intros, social media posts)\n- When speed matters — they all run at once!\n\n---\n\n### 🔗 Connect with Me\n\nWant to explore more smart ways to build with n8n and AI agents?\n\n📺 **YouTube** → [@tech.mayankagg](https://www.youtube.com/@tech.mayankagg)  \n💼 **LinkedIn** → [Mayank Agarwal](https://www.linkedin.com/in/mayank953/)  \n📸 **Instagram** → [@tech.mayankagg](https://www.instagram.com/tech.mayankagg/)\n\n---\n\n*Shared by Mayank Agarwal – Helping you automate smarter with AI + n8n.*\n",
+        "height": 1744,
+        "width": 2624,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        656,
+        320
+      ],
+      "typeVersion": 1,
+      "id": "16dc36a6-aae1-4dff-b1fe-b6c6c642dd99",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        752,
+        2640
+      ],
+      "id": "75490e2f-a6e8-41ea-8c88-df889feb7f03",
+      "name": "When chat message received",
+      "webhookId": "cccbdbd9-6766-4f52-984a-3526713cf4f3"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1120,
+        2256
+      ],
+      "id": "e70291cc-549a-4aa7-a156-78489464c157",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1088,
+        2624
+      ],
+      "id": "5f113e93-bd0e-4461-84bc-58647f4fc43e",
+      "name": "AI Agent1",
+      "alwaysOutputData": false,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1104,
+        2864
+      ],
+      "id": "6db4592d-4c9e-4669-abef-ac22514372d4",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1136,
+        2432
+      ],
+      "id": "38430332-8ef0-4d2f-8a36-a2d11df51835",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ILmRIvQaThEklsaD",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1088,
+        3024
+      ],
+      "id": "e45b1cd2-9165-439e-aa5c-075fc27c6f7c",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ILmRIvQaThEklsaD",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1888,
+        2576
+      ],
+      "id": "45f28182-65dd-40db-bcd2-5855f3e4f57a",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "output"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2208,
+        2592
+      ],
+      "id": "90c24475-c64d-4fab-aba5-97594abadbcb",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Query', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavilyTool",
+      "typeVersion": 1,
+      "position": [
+        1264,
+        2736
+      ],
+      "id": "0b175733-4c98-4cc5-ae59-b7abd874d550",
+      "name": "Search in Tavily",
+      "credentials": {
+        "tavilyApi": {
+          "id": "GEXfLIYhPvoeKENJ",
+          "name": "Tavily account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## ⚙️ Parallelization – Why It Matters in AI Workflows\n\n**Parallelization** means running multiple AI agents or tasks **at the same time**, rather than one after another. In AI workflows, this lets you break down a complex task into **smaller, specialized jobs** — and process them in parallel for **speed, clarity, and depth**.\n\nThis is especially powerful when analyzing content, generating insights, or comparing opinions.\n\n---\n\n### ✅ 1. Faster Analysis\n\nBy handling multiple tasks simultaneously, your workflow becomes much faster.\n\n**Example:**  \nYou're analyzing a piece of text. Instead of checking grammar first, then tone, then structure one after the other — you can check **all three at once** using parallel agents.\n\nThis means:\n- ⏱️ Less time spent per run\n- ⚡ Real-time performance in scaled workflows\n\n---\n\n### ✅ 2. Specialized AI Agents for Each Task\n\nEach agent focuses on **just one thing**, which makes their output more accurate.\n\n**Example:**  \n- Agent A: Grammar checker  \n- Agent B: Tone detector  \n- Agent C: Style evaluator\n\nEach one is tailored with a specific prompt for its task — just like assigning a subject expert in a real team.\n\n---\n\n### ✅ 3. More Complete and Balanced Results\n\nOnce all agents return their output, you can merge or summarize the results into one final report or message. This helps you **see the full picture**, rather than just one side.\n\n**Example:**  \nYou can gather:\n- Technical feedback from one agent  \n- Human tone suggestions from another  \n- Readability scores from a third\n\nWhen combined, these insights give you a **well-rounded understanding** of the input text.\n\n---\n\n### ✅ 4. Easily Scalable and Extendable\n\nThe beauty of this setup? You can add more agents without disrupting the system.\n\n**Example:**  \nWant to analyze **factual accuracy**, **sentiment**, or **SEO optimization**?  \nJust plug in a new agent with the right prompt — and run it alongside the others.\n\nThis makes your n8n workflow **modular, flexible, and future-proof**.\n\n---\n\n### 🔗 Connect with Me\n\nWant to learn how to use Parallelization effectively in n8n workflows with AI agents?\n\n📺 **YouTube** → [@tech.mayankagg](https://www.youtube.com/@tech.mayankagg)  \n💼 **LinkedIn** → [Mayank Agarwal](https://www.linkedin.com/in/mayank953/)  \n📸 **Instagram** → [@tech.mayankagg](https://www.instagram.com/tech.mayankagg/)\n\n---\n\n*Shared by Mayank Agarwal – Helping you build faster, smarter AI automations with n8n.*\n\n\n",
+        "height": 1888,
+        "width": 1800,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        464,
+        3312
+      ],
+      "typeVersion": 1,
+      "id": "ee387aa1-8a9c-426a-8a07-5bf121d48d2f",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search in Tavily": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "cb962069-be48-4551-8b86-7646e34656c0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9ff4b997319de8b36f3ec9da7971f29ebdff0b93b4afaf4fcaed05164719d3b2"
+  },
+  "id": "crcMWzOBTBQQRecM",
+  "tags": []
+}

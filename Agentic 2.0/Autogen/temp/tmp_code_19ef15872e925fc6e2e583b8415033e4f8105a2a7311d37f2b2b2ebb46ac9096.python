@@ -1,0 +1,24 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the data
+data = pd.read_csv('data.csv')
+
+# Check the first few rows of the data to understand its structure
+print(data.head())
+
+# Assuming the column representing survival status is named 'Survived', 
+# where 0 indicates died and 1 indicates survived
+# Count the number of people who died and survived
+survival_counts = data['Survived'].value_counts()
+
+# Plotting the data
+plt.bar(survival_counts.index, survival_counts.values, color=['red', 'green'])
+plt.xticks([0, 1], ['Died', 'Survived'])
+plt.xlabel('Status')
+plt.ylabel('Number of People')
+plt.title('Number of People Who Died and Survived')
+plt.savefig('output.png')
+plt.show()
+
+print("Plot created and saved as output.png")

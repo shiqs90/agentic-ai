@@ -1,0 +1,9 @@
+messages=[
+    
+TextMessage(source='user', models_usage=None, metadata={}, created_at=datetime.datetime(2025, 7, 6, 4, 58, 40, 54313, tzinfo=datetime.timezone.utc), content='Reverse the string "Hello, World!"', type='TextMessage'), 
+
+ToolCallRequestEvent(source='ReverseStringAgent', models_usage=RequestUsage(prompt_tokens=79, completion_tokens=17), metadata={}, created_at=datetime.datetime(2025, 7, 6, 4, 58, 41, 562113, tzinfo=datetime.timezone.utc), content=[FunctionCall(id='call_qrNgjiIQ696SN5dSFuvNNBBP', arguments='{"text":"Hello, World!"}', name='reverse_string')], type='ToolCallRequestEvent'), 
+
+ToolCallExecutionEvent(source='ReverseStringAgent', models_usage=None, metadata={}, created_at=datetime.datetime(2025, 7, 6, 4, 58, 41, 563034, tzinfo=datetime.timezone.utc), content=[FunctionExecutionResult(content='!dlroW ,olleH', name='reverse_string', call_id='call_qrNgjiIQ696SN5dSFuvNNBBP', is_error=False)], type='ToolCallExecutionEvent'), 
+
+ToolCallSummaryMessage(source='ReverseStringAgent', models_usage=None, metadata={}, created_at=datetime.datetime(2025, 7, 6, 4, 58, 41, 563058, tzinfo=datetime.timezone.utc), content='!dlroW ,olleH', type='ToolCallSummaryMessage', tool_calls=[FunctionCall(id='call_qrNgjiIQ696SN5dSFuvNNBBP', arguments='{"text":"Hello, World!"}', name='reverse_string')], results=[FunctionExecutionResult(content='!dlroW ,olleH', name='reverse_string', call_id='call_qrNgjiIQ696SN5dSFuvNNBBP', is_error=False)])] stop_reason=None

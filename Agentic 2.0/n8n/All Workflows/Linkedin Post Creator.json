@@ -1,0 +1,257 @@
+{
+  "name": "Linkedin Post Creator",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -112,
+        16
+      ],
+      "id": "885c9b9e-a8ea-4fbf-a657-d3b025765950",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Hi, Can you please generate the 3 Linkedin Post ideas, based on the below research. \n\n{{ $json.notes }}\n\n\nMake sure that you also provide the reference of what exactly is needed to write the post.\n\nOutput 3 ideas like below.\n\n<topic1>\n<research1>\n\n\n<topic2>\n<research2>\n\n\n<topic3>\n<research3>"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        400,
+        16
+      ],
+      "id": "6aa76b17-0abc-4487-80aa-06975366ecda",
+      "name": "Generate Topic / Ideas",
+      "credentials": {
+        "openAiApi": {
+          "id": "PHyr1OT5ZNhEa8f8",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "task": "MTIwNTkxMzk0NjA3NDk3MjU5OTM6MDow",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleTasks",
+      "typeVersion": 1,
+      "position": [
+        144,
+        16
+      ],
+      "id": "5a8fd817-d952-4079-81f9-b24130194d48",
+      "name": "Get many tasks",
+      "credentials": {
+        "googleTasksOAuth2Api": {
+          "id": "UURPMeGxSdzsZ8jG",
+          "name": "Google Tasks account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a helpful assistant who helps to generate the linkedin posts for the user.\n\n\nYou will be given the content which will have 3 post ideas and reference as below: {{ $json.message.content }}\n\n\n\n\n\nMake sure thay you update the same on Google sheet tool provided to you which has 3 columns\n\nTopic\tReference\tPost\n\n\n\nPost should be concise with a good hook and hashtags in the bottom.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        784,
+        16
+      ],
+      "id": "dcf41cd9-05a9-4dd3-9500-762a8ec01d98",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "15fyVC_mxKytkIxymL0jKynLEX4PVHme2kn0u2Iiwvpk",
+          "mode": "list",
+          "cachedResultName": "Content Ideas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15fyVC_mxKytkIxymL0jKynLEX4PVHme2kn0u2Iiwvpk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15fyVC_mxKytkIxymL0jKynLEX4PVHme2kn0u2Iiwvpk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Topic": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Topic', ``, 'string') }}",
+            "Reference": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Reference', ``, 'string') }}",
+            "Post": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Post', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Topic",
+              "displayName": "Topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reference",
+              "displayName": "Reference",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Post",
+              "displayName": "Post",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.6,
+      "position": [
+        1120,
+        288
+      ],
+      "id": "1ba37452-97f0-4628-9437-32e34913a805",
+      "name": "Append row in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "FgrJo5eg2BF7nBRE",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        784,
+        320
+      ],
+      "id": "9822b09b-10cc-43ce-ad0d-f98d6b5c48ab",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "PHyr1OT5ZNhEa8f8",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get many tasks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Topic / Ideas": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many tasks": {
+      "main": [
+        [
+          {
+            "node": "Generate Topic / Ideas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1c327042-02bc-4ca8-8801-fa5aa389cb04",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f8d1adab0f0b187463975e22550f4270e01999980d8602745b4b4750b4b5fdfb"
+  },
+  "id": "FyhaKRtZVxJgdPqP",
+  "tags": []
+}
